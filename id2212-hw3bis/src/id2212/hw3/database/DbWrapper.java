@@ -63,23 +63,27 @@ public class DbWrapper {
         else return null;  */
     }
     
-    public void updateUser(User u) throws SQLException {
-        regTable.updateRegister(u.name, u.pwd, Register.CONNECTED);
+    public void logoutUser(User u) throws SQLException {
+        regTable.updateRegister(u.name, u.pwd, Register.DISCONNECTED);
     }
     
-    public void storeFileEntity(FileEntity f){
+    public void storeFileEntity(FileEntity f) throws SQLException{
         //throw exception if could not store
-        
+        filesTable.insertFile(f.name, f.size, f.ownerName, f.privacy, f.permission);
     }
     
-    public FileEntity loadFileEntity(FileEntity fe){
+    public FileEntity loadFileEntity(String name) throws SQLException{
         //throw exception if could not load
         //else return a FileEntity with fields set
+        ResultSet r = filesTable.selectByName(name);
+        if (r.next()) {
+            return new FileEntity(r.getString("name"),r.getInt("size"),r.getString("owner"),r.getBoolean("privacy"),r.getBoolean("permission"));
+        }
         return null;
     }
 
-    public void deleteUser(User user) {
-        
+    public void deleteUser(User user) throws SQLException {
+        regTable.deleteRegister(user.name);
     }
     
 }

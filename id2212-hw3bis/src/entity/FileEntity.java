@@ -15,5 +15,14 @@ public class FileEntity {
     public String name;
     public Integer size;
     public String ownerName;
-    public String access;
+    public boolean privacy;
+    public boolean permission;
+    
+    public FileEntity(String name, Integer size, String owner, boolean privacy, boolean perm) {
+        this.name=name;
+        this.size=size;
+        this.ownerName=owner;
+        this.privacy=privacy;
+        this.permission=perm;
+    }
 }
