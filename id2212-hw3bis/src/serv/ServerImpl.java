@@ -18,9 +18,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public User login(String username, String password) throws RemoteException {
+    public void login(String username, String password) throws RemoteException {
         try {
-            return DbWrapper.getInstance().loadUser(new User(username, password));
+            DbWrapper.getInstance().loadUser(new User(username, password));
             
         } catch (Exception ex) {
             throw new RemoteException(ex.getMessage());
@@ -28,13 +28,13 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public User register(String username, String password) throws RemoteException {
+    public void register(String username, String password) throws RemoteException {
         if(password.length()<5){
             throw new RemoteException("Password must be at least 5 characters");
         }
         
         try {
-            return DbWrapper.getInstance().storeUser(new User(username, password));
+            DbWrapper.getInstance().storeUser(new User(username, password));
         } catch (Exception ex) {
             throw new RemoteException(ex.getMessage());
         }

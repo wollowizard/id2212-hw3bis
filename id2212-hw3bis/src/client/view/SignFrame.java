@@ -158,9 +158,9 @@ public class SignFrame extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
 
-            User u = client.servObj.register(usernameRegister.getText(), passwordRegister.getText());
-            client.clientName = u.name;
-            client.clientPasswd = u.pwd;
+            client.servObj.register(usernameRegister.getText(), passwordRegister.getText());
+            client.clientName = usernameRegister.getText();
+            client.clientPasswd = passwordRegister.getText();
             this.dispose();
             new MainFrame(client).setVisible(true);
 
@@ -176,9 +176,9 @@ public class SignFrame extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
 
-            User u = client.servObj.login(usernameRegister.getText(), passwordRegister.getText());
-            client.clientName = u.name;
-            client.clientPasswd = u.pwd;
+            client.servObj.login(usernameRegister.getText(), passwordRegister.getText());
+            client.clientName = passwordRegister.getText();
+            client.clientPasswd = passwordRegister.getText();
 
             this.dispose();
             new MainFrame(client).setVisible(true);
