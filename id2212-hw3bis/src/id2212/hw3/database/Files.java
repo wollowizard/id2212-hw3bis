@@ -81,6 +81,7 @@ public class Files {
         updateSize.setString(2, name);
         
         int noOfAffectedRows = updateSize.executeUpdate();
+        if (noOfAffectedRows==0) throw new SQLException("FILE NOT FOUND");
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
@@ -90,6 +91,7 @@ public class Files {
         updatePrivacy.setString(2, name);
         
         int noOfAffectedRows = updatePrivacy.executeUpdate();
+        if (noOfAffectedRows==0) throw new SQLException("FILE NOT FOUND");
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
@@ -99,6 +101,7 @@ public class Files {
         updatePermission.setString(2, name);
         
         int noOfAffectedRows = updatePermission.executeUpdate();
+        if (noOfAffectedRows==0) throw new SQLException("FILE NOT FOUND");
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
