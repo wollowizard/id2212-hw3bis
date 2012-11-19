@@ -13,7 +13,7 @@ import entity.User;
  */
 public class DbWrapper {
     
-    private DbWrapper instance =null;
+    private static DbWrapper instance =null;
     private DbWrapper(){
         
         //connect to the db, create the tables, initialize everything
@@ -22,7 +22,7 @@ public class DbWrapper {
         
     }
     
-    public DbWrapper getInstance(){
+    public static DbWrapper getInstance(){
         if( instance==null){
             instance=new DbWrapper();
         }
@@ -50,6 +50,10 @@ public class DbWrapper {
         //throw exception if could not load
         //else return a FileEntity with fields set
         return null;
+    }
+
+    public void deleteUser(User user) {
+        
     }
     
 }
