@@ -5,6 +5,7 @@
 package Database;
 
 import client.Client;
+import entity.FileEntity;
 
 /**
  *
@@ -23,4 +24,19 @@ public class DbManager {
         //return a client with username and pwd set
         return null;
     }
+    
+    
+    public boolean storeFile(FileEntity f) {
+
+        //return true if store successful
+        return false;
+    }
+
+    public FileEntity loadFile(String filename) {
+
+        //return a client with username and pwd set
+        return null;
+    }
+    
+    
 }
