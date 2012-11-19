@@ -5,7 +5,10 @@ import entity.User;
 import id2212.hw3.database.DbWrapper;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 import java.util.jar.Attributes;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
 public class ServerImpl extends UnicastRemoteObject implements Server {
@@ -52,6 +55,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     @Override
     public void uploadFile(String filename, String owner, String access, byte[] content) throws RemoteException {
-        DbWrapper.getInstance().storeFileEntity(new FileEntity(filename, owner, access, content));
+        try {
+            DbWrapper.getInstance().storeFileEntity(new FileEntity(filename, content.length, owner, true, true));
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
