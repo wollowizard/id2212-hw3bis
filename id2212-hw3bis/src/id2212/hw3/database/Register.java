@@ -36,7 +36,7 @@ public class Register {
         this.statement=s;
     }
     
-    public void createTable() throws Exception {
+    public void createTable() throws SQLException {
         ResultSet result = conn.getMetaData().getTables(null, null, DB_NAME, null);
         if (result.next()) {
             dropTable();
@@ -51,7 +51,7 @@ public class Register {
                 "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
                 + "passwd VARCHAR(255) NOT NULL, state VARCHAR(255))");
         insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,passwd,state) VALUES (?, ?, ?)");
-        update=conn.prepareStatement("UPDATE "+DB_NAME+" SET state=? WHERE name=?");
+        update=conn.prepareStatement("UPDATE "+DB_NAME+" SET state=? WHERE name=? AND passwd=?");
         select=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE name=?");
         selectConected = conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE state=?");
         delete=conn.prepareStatement("DELETE FROM "+DB_NAME+" WHERE name=?");
@@ -67,15 +67,16 @@ public class Register {
         System.out.println("Register inserted, changes made = " + noOfAffectedRows + " row(s).");
     }
     
-    public void updateRegister(String name, String state) throws Exception {
+    public void updateRegister(String name, String passwd, String state) throws SQLException {
         update.setString(1, state);
         update.setString(2, name);
+        update.setString(3, passwd);
         int noOfAffectedRows = update.executeUpdate();
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
     
-    public ResultSet selectRegister(String name) throws Exception {
+    public ResultSet selectRegister(String name) throws SQLException {
         select.setString(1, name);
         return select.executeQuery();
     }
@@ -85,18 +86,18 @@ public class Register {
         return select.executeQuery();
     }
     
-    public void deleteRegister(String name) throws Exception {
+    public void deleteRegister(String name) throws SQLException {
         delete.setString(1, name);
         int noOfAffectedRows = delete.executeUpdate();
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
 
-    public ResultSet selectAll(String name) throws Exception {
+    public ResultSet selectAll(String name) throws SQLException {
         return statement.executeQuery("SELECT * FROM "+name);
     }
 
-    public void dropTable() throws Exception {
+    public void dropTable() throws SQLException {
         int NoOfAffectedRows = statement.executeUpdate("DROP TABLE "+DB_NAME);
         System.out.println();
         System.out.println("Table dropped, " + NoOfAffectedRows + " row(s) affected");
