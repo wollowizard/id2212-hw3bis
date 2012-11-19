@@ -21,8 +21,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     public String clientName;
     public Server servObj;
     private String servName;
-    
-    
+      
     public String clientPasswd;
 
     public ClientImpl(String sname) throws RemoteException {

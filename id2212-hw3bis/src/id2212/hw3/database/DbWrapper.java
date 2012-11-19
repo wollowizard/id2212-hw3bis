@@ -30,7 +30,8 @@ public class DbWrapper {
         return instance;
     }
     
-    public void storeUser(User u){
+    public User storeUser(User u){
+        return null;
         //throw exception if could not store
         
     }

@@ -16,4 +16,13 @@ public class FileEntity {
     public Integer size;
     public String ownerName;
     public String access;
+    public byte[] content;
+    
+    public FileEntity(String filename, String ownerName, String access, byte[] content){
+        this.name=filename;
+        this.size=content.length;
+        this.ownerName=ownerName;
+        this.access=access;
+        this.content=content;
+    }
 }

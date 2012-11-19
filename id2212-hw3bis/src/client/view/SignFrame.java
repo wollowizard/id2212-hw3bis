@@ -5,6 +5,7 @@
 package client.view;
 
 import client.ClientImpl;
+import entity.User;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,11 +18,12 @@ import javax.swing.JOptionPane;
 public class SignFrame extends javax.swing.JFrame {
 
     private ClientImpl client;
+
     /**
      * Creates new form SignFrame
      */
     public SignFrame(ClientImpl c) {
-        this.client=c;
+        this.client = c;
         initComponents();
     }
 
@@ -37,7 +39,7 @@ public class SignFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        registerButton = new javax.swing.JButton();
         usernameRegister = new javax.swing.JTextField();
         passwordRegister = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -54,10 +56,10 @@ public class SignFrame extends javax.swing.JFrame {
 
         jLabel3.setText("jLabel3");
 
-        jButton1.setText("register");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        registerButton.setText("register");
+        registerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                registerButtonActionPerformed(evt);
             }
         });
 
@@ -79,6 +81,11 @@ public class SignFrame extends javax.swing.JFrame {
         passwordLogin.setText("jTextField2");
 
         jButton2.setText("Login");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,7 +100,7 @@ public class SignFrame extends javax.swing.JFrame {
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(registerButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton2))
                             .addGroup(layout.createSequentialGroup()
@@ -135,7 +142,7 @@ public class SignFrame extends javax.swing.JFrame {
                     .addComponent(passwordLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(registerButton)
                     .addComponent(jButton2))
                 .addContainerGap(105, Short.MAX_VALUE))
         );
@@ -147,27 +154,43 @@ public class SignFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameLoginActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         try {
             // TODO add your handling code here:
 
-            client.servObj.register(usernameRegister.getText(), passwordRegister.getText());
-                        
+            User u = client.servObj.register(usernameRegister.getText(), passwordRegister.getText());
+            client.clientName = u.name;
+            client.clientPasswd = u.pwd;
             this.dispose();
             new MainFrame(client).setVisible(true);
-            
+
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
+    }//GEN-LAST:event_registerButtonActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        try {
+            // TODO add your handling code here:
+
+            User u = client.servObj.login(usernameRegister.getText(), passwordRegister.getText());
+            client.clientName = u.name;
+            client.clientPasswd = u.pwd;
+
+            this.dispose();
+            new MainFrame(client).setVisible(true);
+
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
     /**
      * @param args the command line arguments
      */
-   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -176,6 +199,7 @@ public class SignFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField passwordLogin;
     private javax.swing.JTextField passwordRegister;
+    private javax.swing.JButton registerButton;
     private javax.swing.JTextField usernameLogin;
     private javax.swing.JTextField usernameRegister;
     // End of variables declaration//GEN-END:variables
