@@ -6,6 +6,7 @@ package id2212.hw3.database;
 
 import entity.FileEntity;
 import entity.User;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class DbWrapper {
     
-    private DbWrapper instance =null;
+    private static DbWrapper instance =null;
     private Register regTable;
     private Files filesTable;
     private DataBase db;
@@ -39,22 +40,31 @@ public class DbWrapper {
         
     }
     
-    public DbWrapper getInstance(){
+    public static DbWrapper getInstance(){
         if( instance==null){
             instance=new DbWrapper();
         }   
         return instance;
     }
     
-    public void storeUser(User u){
+    public void storeUser(User u) throws SQLException{
         //throw exception if could not store
-        
+        regTable.insertRegister(u.name, u.pwd, Register.CONNECTED);
     }
     
-    public User loadUser(User u){
+    public void loadUser(User u) throws SQLException{
         //throw exception if could not load
         //else return a User with username and pwd set
-        return null;
+        regTable.updateRegister(u.name, u.pwd, Register.CONNECTED);
+       /* ResultSet r = regTable.selectRegister(name);
+        if (r.next()) {
+            return new User(r.getString("name"),r.getString("passwd"), r.getString("state"));
+        }
+        else return null;  */
+    }
+    
+    public void updateUser(User u) throws SQLException {
+        regTable.updateRegister(u.name, u.pwd, Register.CONNECTED);
     }
     
     public void storeFileEntity(FileEntity f){
@@ -66,6 +76,10 @@ public class DbWrapper {
         //throw exception if could not load
         //else return a FileEntity with fields set
         return null;
+    }
+
+    public void deleteUser(User user) {
+        
     }
     
 }

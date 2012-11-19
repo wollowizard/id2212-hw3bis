@@ -4,6 +4,7 @@
  */
 package client;
 
+import client.view.SignFrame;
 import java.rmi.RemoteException;
 
 /**
@@ -38,6 +39,7 @@ public class mainClient {
         ClientImpl c = null;
 
         c = new ClientImpl(srvName);
+        new SignFrame(c).setVisible(true);
                 
        
 
