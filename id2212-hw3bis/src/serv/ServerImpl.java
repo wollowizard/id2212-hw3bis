@@ -56,6 +56,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public void uploadFile(String filename, String owner, String access, byte[] content) throws RemoteException {
         try {
+
             FileEntity fe=new FileEntity(filename, content.length, owner, true, true);
             //fe.setContent(content);
 

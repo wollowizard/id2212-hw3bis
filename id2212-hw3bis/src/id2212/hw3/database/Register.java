@@ -71,9 +71,10 @@ public class Register {
         update.setString(1, state);
         update.setString(2, name);
         update.setString(3, passwd);
-        int noOfAffectedRows = update.executeUpdate();
+        int noAffectedRows = update.executeUpdate();
+        if (noAffectedRows==0) throw new SQLException("USER NOT FOUND");
         System.out.println();
-        System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
+        System.out.println("Register update, changes made = " + noAffectedRows + " row(s).");
     }
     
     public ResultSet selectRegister(String name) throws SQLException {

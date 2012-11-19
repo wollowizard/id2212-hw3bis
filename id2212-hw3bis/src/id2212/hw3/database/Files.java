@@ -51,8 +51,8 @@ public class Files {
     public void createFiles() throws SQLException {
         statement.executeUpdate(
                 "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
-                + "size int, owner VARCHAR(255) NOT NULL, privacy boolean, time datetime DEFAULT(getdate()), permission BOOLEAN");
-        insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,size,owner,privacy,premission)"
+                + "size int, owner VARCHAR(255) NOT NULL, privacy BOOLEAN NOT NULL, permission BOOLEAN NOT NULL)");
+        insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,size,owner,privacy,permission)"
                 + " VALUES (?, ?, ?, ?, ?)");
         updateSize=conn.prepareStatement("UPDATE "+DB_NAME+" SET size=? AND time=DEFAULT WHERE name=?");
         updatePrivacy=conn.prepareStatement("UPDATE "+DB_NAME+" SET privacy=? AND time=DEFAULT WHERE name=?");
@@ -81,6 +81,7 @@ public class Files {
         updateSize.setString(2, name);
         
         int noOfAffectedRows = updateSize.executeUpdate();
+        if (noOfAffectedRows==0) throw new SQLException("FILE NOT FOUND");
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
@@ -90,6 +91,7 @@ public class Files {
         updatePrivacy.setString(2, name);
         
         int noOfAffectedRows = updatePrivacy.executeUpdate();
+        if (noOfAffectedRows==0) throw new SQLException("FILE NOT FOUND");
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
@@ -99,6 +101,7 @@ public class Files {
         updatePermission.setString(2, name);
         
         int noOfAffectedRows = updatePermission.executeUpdate();
+        if (noOfAffectedRows==0) throw new SQLException("FILE NOT FOUND");
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
