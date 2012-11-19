@@ -46,4 +46,8 @@ public class DataBase {
         return new Register(conn, statement);
     }
     
+    public Files getFilesInstance() {
+        return new Files(conn,statement);
+    }
+    
 }
