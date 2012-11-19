@@ -38,17 +38,17 @@ public class Files {
         this.statement=s;
     }
     
-     public void createTable() throws Exception {
+     public void createTable() throws SQLException {
         ResultSet result = conn.getMetaData().getTables(null, null, DB_NAME, null);
         if (result.next()) {
             dropTable();
         }
-        createRegister();
+        createFiles();
         System.out.println();
         System.out.println("table created...");
     }
     
-    public void createRegister() throws SQLException {
+    public void createFiles() throws SQLException {
         statement.executeUpdate(
                 "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
                 + "size int, owner VARCHAR(255) NOT NULL, privacy boolean, time datetime DEFAULT(getdate()), permission BOOLEAN");
@@ -76,7 +76,7 @@ public class Files {
         System.out.println("Register inserted, changes made = " + noOfAffectedRows + " row(s).");
     }
     
-    public void updateSize(String name, int size) throws Exception {
+    public void updateSize(String name, int size) throws SQLException {
         updateSize.setInt(1, size);
         updateSize.setString(2, name);
         
@@ -85,7 +85,7 @@ public class Files {
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
     
-    public void updatePrivacy(String name, boolean p) throws Exception {
+    public void updatePrivacy(String name, boolean p) throws SQLException {
         updatePrivacy.setBoolean(1, p);
         updatePrivacy.setString(2, name);
         
@@ -94,7 +94,7 @@ public class Files {
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
     
-    public void updatePermission(String name, boolean p) throws Exception {
+    public void updatePermission(String name, boolean p) throws SQLException {
         updatePermission.setBoolean(1, p);
         updatePermission.setString(2, name);
         
@@ -103,7 +103,7 @@ public class Files {
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
     
-    public ResultSet selectByName(String name) throws Exception {
+    public ResultSet selectByName(String name) throws SQLException {
         selectByName.setString(1, name);
         return selectByName.executeQuery();
     }
@@ -119,18 +119,18 @@ public class Files {
         return selectByNameAndOwner.executeQuery();
     }
     
-    public void deleteFile(String name) throws Exception {
+    public void deleteFile(String name) throws SQLException {
         delete.setString(1, name);
         int noOfAffectedRows = delete.executeUpdate();
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
 
-    public ResultSet selectAll() throws Exception {
+    public ResultSet selectAll() throws SQLException {
         return statement.executeQuery("SELECT * FROM "+DB_NAME);
     }
 
-    public void dropTable() throws Exception {
+    public void dropTable() throws SQLException {
         int NoOfAffectedRows = statement.executeUpdate("DROP TABLE "+DB_NAME);
         System.out.println();
         System.out.println("Table dropped, " + NoOfAffectedRows + " row(s) affected");
