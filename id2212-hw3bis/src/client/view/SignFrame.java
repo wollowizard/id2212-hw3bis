@@ -46,7 +46,7 @@ public class SignFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         usernameLogin = new javax.swing.JTextField();
         passwordLogin = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        loginButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,10 +80,10 @@ public class SignFrame extends javax.swing.JFrame {
 
         passwordLogin.setText("jTextField2");
 
-        jButton2.setText("Login");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        loginButton.setText("Login");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
         });
 
@@ -102,7 +102,7 @@ public class SignFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(registerButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2))
+                                .addComponent(loginButton))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
@@ -143,7 +143,7 @@ public class SignFrame extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(registerButton)
-                    .addComponent(jButton2))
+                    .addComponent(loginButton))
                 .addContainerGap(105, Short.MAX_VALUE))
         );
 
@@ -170,7 +170,7 @@ public class SignFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_registerButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
 
         try {
@@ -186,17 +186,17 @@ public class SignFrame extends javax.swing.JFrame {
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_loginButtonActionPerformed
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton loginButton;
     private javax.swing.JTextField passwordLogin;
     private javax.swing.JTextField passwordRegister;
     private javax.swing.JButton registerButton;
