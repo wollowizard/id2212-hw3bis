@@ -4,30 +4,36 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author alfredo
  */
-public class FileEntity {
+public class FileEntity implements Serializable{
 
-    public static final String PUBLICACCESS = "pubacc";
-    public static final String PRIVATEACCESS = "privateacc";
-    public String name;
-    public Integer size;
-    public String ownerName;
-    public boolean privacy;
-    public boolean permission;
+    private FileEntityDescription description;
     private byte[] content;
     
-    public FileEntity(String name, Integer size, String owner, boolean privacy, boolean perm) {
-        this.name=name;
-        this.size=size;
-        this.ownerName=owner;
-        this.privacy=privacy;
-        this.permission=perm;
+    public FileEntity(FileEntityDescription fe, byte[] content) {
+        this.description=fe;
+        this.content=content;
     }
     
     public void setContent(byte[] c) {
         this.content = c;
     }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public FileEntityDescription getDescription() {
+        return description;
+    }
+
+    public void setDescription(FileEntityDescription description) {
+        this.description = description;
+    }
+    
 }

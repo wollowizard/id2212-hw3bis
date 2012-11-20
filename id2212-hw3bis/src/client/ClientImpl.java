@@ -4,13 +4,18 @@
  */
 package client;
 
-
-import serv.Server;
+import entity.FileEntity;
+import entity.FileEntityDescription;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import javax.swing.SwingUtilities;
+import java.util.Date;
+import serv.Server;
 
 /**
  *
@@ -19,10 +24,16 @@ import javax.swing.SwingUtilities;
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
     public String clientName;
+    public String clientPasswd;
+    
+    
     public Server servObj;
     private String servName;
-      
-    public String clientPasswd;
+    public ArrayList<FileEntityDescription> yourfiles = new ArrayList<>();
+    public ArrayList<FileEntityDescription> allfiles = new ArrayList<>();
+    public FileEntity currentFileToUpload = new FileEntity(new FileEntityDescription("", 0, "", true, true,new Date()), null);
+    
+    public ArrayList<MyObserver> observers = new ArrayList<>();
 
     public ClientImpl(String sname) throws RemoteException {
         this.servName = sname;
@@ -34,5 +45,39 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
             System.exit(0);
         }
         System.out.println("Connected to bank: " + this.servName);
-    }    
+    }
+
+    public void validateFileToUpload() throws Exception {
+        FileEntity f = this.currentFileToUpload;
+        if (f.getContent() == null) {
+            throw new Exception("File content not valid");
+        }
+    }
+
+    public void addObserver(MyObserver o) {
+        this.observers.add(o);
+    }
+
+    public void notifyAll(Object x) {
+        ClientImpl y = this;
+        for (MyObserver o : observers) {
+            o.update(y, x);
+        }
+    }
+
+    public void storeFileOnDisk(FileEntity completeFile) throws IOException {
+        File file = new File(completeFile.getDescription().name);
+
+        boolean created = file.createNewFile();
+        if (!created) {
+            System.out.println("File already exists.");
+        } else {
+            FileOutputStream fos = new FileOutputStream(file);
+            
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            bos.write(completeFile.getContent());
+            bos.flush();
+            bos.close();
+        }
+    }
 }

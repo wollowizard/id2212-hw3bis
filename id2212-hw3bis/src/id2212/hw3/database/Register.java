@@ -71,6 +71,7 @@ public class Register {
         update.setString(1, state);
         update.setString(2, name);
         update.setString(3, passwd);
+        
         int noAffectedRows = update.executeUpdate();
         if (noAffectedRows==0) throw new SQLException("USER NOT FOUND");
         System.out.println();
