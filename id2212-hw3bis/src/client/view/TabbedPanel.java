@@ -361,17 +361,20 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
 
     private void updateYourFiles() {
         System.out.println("Updating your files");
+        DefaultTableModel model = (DefaultTableModel) yourFilesTable.getModel();
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+
         for (FileEntityDescription fe : client.yourfiles) {
             System.out.println(fe.name);
-            DefaultTableModel model = (DefaultTableModel) yourFilesTable.getModel();
-            while (model.getRowCount() > 0) {
-                model.removeRow(0);
-            }
+
             model.addRow(new Object[]{fe.name, fe.writepermission, fe.privateFile, fe.size.toString()});
             //model.getValueAt(0, 0).addMouseListener(new PopClickListener());
-
-
         }
+        
+        System.out.println("Number of rows in table" + model.getRowCount());
+        
     }
 
     private void updateAllFiles() {
