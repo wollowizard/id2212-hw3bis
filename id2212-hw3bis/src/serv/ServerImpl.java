@@ -62,7 +62,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public void uploadFile(FileEntity file) throws RemoteException {
         try {
             this.storeFileOnDisk(file);
-            DbWrapper.getInstance().storeFileEntity(file);
+            DbWrapper.getInstance().storeFileEntity(file, getPathOfFileGivenName(file.getDescription().name));
 
         } catch (IOException | SQLException ex) {
             throw new RemoteException(ex.getMessage());
@@ -125,10 +125,25 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             }
         }
         try {
-            String abspath = fd.DbWrapper.getInstance().deleteFile(filename);
+            String abspath=getPathOfFileGivenName(filename);
+            
+            System.out.println("Abs path: "  + abspath);
+            DbWrapper.getInstance().deleteFile(filename);
+            
+            File f = new File(abspath);
+            if (!f.exists()) {
+                throw new IllegalArgumentException(
+                        "Delete: no such file or directory: " + abspath);
+            }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            if (!f.canWrite()) {
+                throw new IllegalArgumentException("Delete: write protected: "
+                        + abspath);
+            }
+            f.delete();
+
+        } catch (IOException | SQLException ex) {
+            throw new RemoteException(ex.getMessage());
         }
     }
 
@@ -257,7 +272,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         if (!completePath.endsWith(separator)) {
             completePath += separator;
         }
-        completePath += filename
+        completePath += filename;
         return completePath;
 
     }

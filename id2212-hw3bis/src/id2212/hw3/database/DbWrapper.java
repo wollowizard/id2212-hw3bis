@@ -75,14 +75,14 @@ public class DbWrapper {
         regTable.updateRegister(u.name, u.pwd, Register.DISCONNECTED);
     }
 
-    public void storeFileEntity(FileEntity fe) throws SQLException {
+    public void storeFileEntity(FileEntity fe, String absolutepath) throws SQLException {
         //throw exception if could not store
         //add date
 
         FileEntityDescription f = fe.getDescription();
         f.lastModified = new Date();
         filesTable.insertFile(f.name, f.size, f.ownerName, f.privateFile,
-                f.writepermission, ""); //insert path of file
+                f.writepermission, absolutepath); //insert path of file
     }
 
     public FileEntityDescription loadFileEntity(String name) throws SQLException {
