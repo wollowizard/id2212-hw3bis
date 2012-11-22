@@ -28,5 +28,6 @@ public class FileEntityDescription implements Serializable{
         this.ownerName = owner;
         this.privateFile = privateFile;
         this.writepermission = writepermission;
+        this.lastModified=last;
     }
 }

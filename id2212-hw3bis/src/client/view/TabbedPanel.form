@@ -19,8 +19,8 @@
           <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="welcomeLabel" min="-2" pref="83" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
+              <Component id="welcomeLabel" min="-2" pref="216" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="logoutButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
           </Group>
@@ -219,15 +219,21 @@
                 <Component class="javax.swing.JTable" name="yourFilesTable">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="4" rowCount="0">
+                      <Table columnCount="5" rowCount="0">
                         <Column editable="false" title="Filename" type="java.lang.Object"/>
                         <Column editable="false" title="Permisson" type="java.lang.Object"/>
                         <Column editable="false" title="Privacy" type="java.lang.Object"/>
                         <Column editable="false" title="Size" type="java.lang.Object"/>
+                        <Column editable="false" title="Last modified" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
@@ -314,16 +320,22 @@
                 <Component class="javax.swing.JTable" name="allFilesTable">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="5" rowCount="0">
+                      <Table columnCount="6" rowCount="0">
                         <Column editable="false" title="Filename" type="java.lang.Object"/>
                         <Column editable="false" title="Owner" type="java.lang.Object"/>
                         <Column editable="false" title="Permission" type="java.lang.Object"/>
                         <Column editable="false" title="Privacy" type="java.lang.Object"/>
                         <Column editable="false" title="Size" type="java.lang.Object"/>
+                        <Column editable="false" title="Last modified" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>

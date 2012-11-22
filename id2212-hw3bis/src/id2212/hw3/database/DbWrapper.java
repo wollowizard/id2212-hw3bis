@@ -126,7 +126,9 @@ public class DbWrapper {
         ArrayList<FileEntityDescription> toreturn = new ArrayList<>();
         ResultSet r = filesTable.selectByOwner(username);
         while (r.next()) {
+    
             Date d = r.getTimestamp("time");
+            
             toreturn.add(new FileEntityDescription(r.getString("name"), r.getInt("size"),
                     r.getString("owner"), r.getBoolean("privacy"),
                     r.getBoolean("permission"), d));

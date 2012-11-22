@@ -253,11 +253,11 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
 
             },
             new String [] {
-                "Filename", "Permisson", "Privacy", "Size"
+                "Filename", "Permisson", "Privacy", "Size", "Last modified"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -291,11 +291,11 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
 
             },
             new String [] {
-                "Filename", "Owner", "Permission", "Privacy", "Size"
+                "Filename", "Owner", "Permission", "Privacy", "Size", "Last modified"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -343,8 +343,8 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
             .addComponent(jTabbedPane1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
+                .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logoutButton)
                 .addGap(75, 75, 75))
         );
@@ -368,13 +368,24 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
 
         for (FileEntityDescription fe : client.yourfiles) {
             System.out.println(fe.name);
+            String size = this.humanReadableByteCount(fe.size, false);
+            String writePerm = "Read only";
+            String privacy = "Private";
 
-            model.addRow(new Object[]{fe.name, fe.writepermission, fe.privateFile, fe.size.toString()});
+
+            if (fe.writepermission) {
+                writePerm = "Read and write";
+            }
+            if (!fe.privateFile) {
+                privacy = "Public";
+            }
+
+            model.addRow(new Object[]{fe.name, writePerm, privacy, size.toString(), fe.lastModified.toString()});
             //model.getValueAt(0, 0).addMouseListener(new PopClickListener());
         }
-        
+
         System.out.println("Number of rows in table" + model.getRowCount());
-        
+
     }
 
     private void updateAllFiles() {
@@ -387,8 +398,20 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
 
         for (FileEntityDescription fe : client.allfiles) {
             System.out.println(fe.name);
+            String size = this.humanReadableByteCount(fe.size, false);
+            String writePerm = "Read only";
+            String privacy = "Private";
 
-            model.addRow(new Object[]{fe.name, fe.ownerName, fe.writepermission, fe.privateFile, fe.size.toString()});
+
+            if (fe.writepermission) {
+                writePerm = "Read and write";
+            }
+            if (!fe.privateFile) {
+                privacy = "Public";
+            }
+
+            model.addRow(new Object[]{fe.name, writePerm, privacy, size.toString(), fe.lastModified.toString()});
+
         }
     }
 
@@ -511,5 +534,15 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
+    }
+
+    public String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) {
+            return bytes + " B";
+        }
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 }
