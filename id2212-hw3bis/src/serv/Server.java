@@ -18,7 +18,7 @@ public interface Server extends Remote {
     public void login(String username, String password)throws RemoteException;
     
     public ArrayList<FileEntityDescription> loadAllFilesof(String username)throws RemoteException;
-    public ArrayList<FileEntityDescription> loadFiles(String filter)throws RemoteException;
+    public ArrayList<FileEntityDescription> loadFiles(String filter, String clientName)throws RemoteException;
 
     public void deleteFile(String username, String filename)throws RemoteException;
 

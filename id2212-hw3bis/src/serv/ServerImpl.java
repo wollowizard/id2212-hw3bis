@@ -84,12 +84,12 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public ArrayList<FileEntityDescription> loadFiles(String filter) throws RemoteException {
+    public ArrayList<FileEntityDescription> loadFiles(String filter, String clientName) throws RemoteException {
 
 
         ArrayList<FileEntityDescription> toreturn;
         try {
-            toreturn = DbWrapper.getInstance().loadFiles(filter);
+            toreturn = DbWrapper.getInstance().loadFiles(filter, clientName);
         } catch (SQLException ex) {
             throw new RemoteException(ex.getMessage());
         }

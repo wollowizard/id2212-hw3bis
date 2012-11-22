@@ -505,7 +505,7 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
 
     public void search() {
         try {
-            client.allfiles = client.servObj.loadFiles(filterTextField.getText());
+            client.allfiles = client.servObj.loadFiles(filterTextField.getText(), client.clientName);
 
             updateAllFiles();
         } catch (RemoteException ex) {
