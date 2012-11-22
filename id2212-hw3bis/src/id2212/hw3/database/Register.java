@@ -91,19 +91,19 @@ public class Register {
     
     public void updateNumUploads(String name, Integer n) throws SQLException {
         updateUpload.setInt(1, n);
-        update.setString(2, name);
+        updateUpload.setString(2, name);
         
-        int noAffectedRows = update.executeUpdate();
+        int noAffectedRows = updateUpload.executeUpdate();
         if (noAffectedRows==0) throw new SQLException("USER NOT FOUND");
         System.out.println();
         System.out.println("Register update, changes made = " + noAffectedRows + " row(s).");
     }
     
     public void updateNumDownloads(String name, Integer n) throws SQLException {
-        updateUpload.setInt(1, n);
-        update.setString(2, name);
+        updateDownload.setInt(1, n);
+        updateDownload.setString(2, name);
         
-        int noAffectedRows = update.executeUpdate();
+        int noAffectedRows = updateDownload.executeUpdate();
         if (noAffectedRows==0) throw new SQLException("USER NOT FOUND");
         System.out.println();
         System.out.println("Register update, changes made = " + noAffectedRows + " row(s).");
