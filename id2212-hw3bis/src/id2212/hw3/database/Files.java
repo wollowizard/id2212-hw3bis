@@ -58,7 +58,7 @@ public class Files {
                 + "size int, owner VARCHAR(255) NOT NULL, privacy BOOLEAN NOT NULL, "
                 + "permission BOOLEAN NOT NULL, path VARCHAR(225), "
                 + "time TIMESTAMP)");
-        insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,size,owner,privacy,permission, path, modify)"
+        insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,size,owner,privacy,permission, path, time)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?)");
         updateSize=conn.prepareStatement("UPDATE "+DB_NAME+" SET size=? WHERE name=?");
         updatePrivacy=conn.prepareStatement("UPDATE "+DB_NAME+" SET privacy=? WHERE name=?");

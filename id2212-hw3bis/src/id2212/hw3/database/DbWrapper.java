@@ -7,6 +7,10 @@ package id2212.hw3.database;
 import entity.FileEntity;
 import entity.FileEntityDescription;
 import entity.User;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -66,8 +70,6 @@ public class DbWrapper {
          }
          else return null;  */
     }
-    
-
 
     public void logoutUser(User u) throws SQLException {
         regTable.updateRegister(u.name, u.pwd, Register.DISCONNECTED);
@@ -76,10 +78,10 @@ public class DbWrapper {
     public void storeFileEntity(FileEntity fe) throws SQLException {
         //throw exception if could not store
         //add date
-        
+
         FileEntityDescription f = fe.getDescription();
-        f.lastModified=new Date();
-        filesTable.insertFile(f.name, f.size, f.ownerName, f.privateFile, 
+        f.lastModified = new Date();
+        filesTable.insertFile(f.name, f.size, f.ownerName, f.privateFile,
                 f.writepermission, ""); //insert path of file
     }
 
@@ -89,7 +91,7 @@ public class DbWrapper {
         ResultSet r = filesTable.selectByName(name);
         if (r.next()) {
             Date d = r.getTimestamp("time");
-            return new FileEntityDescription(r.getString("name"), r.getInt("size"), r.getString("owner"), r.getBoolean("privacy"), r.getBoolean("permission"),d);
+            return new FileEntityDescription(r.getString("name"), r.getInt("size"), r.getString("owner"), r.getBoolean("privacy"), r.getBoolean("permission"), d);
         }
         return null;
     }
@@ -101,55 +103,67 @@ public class DbWrapper {
     public ArrayList<FileEntityDescription> loadFiles(String filter) throws SQLException {
         //implement
         //Note that if a file is marked as private, it can be listed only for its owner
-        
-        
-        ArrayList<FileEntityDescription> toreturn=new ArrayList<>();
+
+
+        ArrayList<FileEntityDescription> toreturn = new ArrayList<>();
         ResultSet r = filesTable.selectAll();
         while (r.next()) {
-            if (r.getBoolean("privacy") && !r.getString("owner").equals(filter))
+            if (r.getBoolean("privacy") && !r.getString("owner").equals(filter)) {
                 continue;
+            }
             Date d = r.getTimestamp("time");
-            toreturn.add(new FileEntityDescription(r.getString("name"),r.getInt("size"),
-                    r.getString("owner"),r.getBoolean("privacy"),
-                    r.getBoolean("permission"),d));
+            toreturn.add(new FileEntityDescription(r.getString("name"), r.getInt("size"),
+                    r.getString("owner"), r.getBoolean("privacy"),
+                    r.getBoolean("permission"), d));
         }
         return toreturn;
     }
 
     public ArrayList<FileEntityDescription> loadAllFilesof(String username) throws SQLException {
-        
+
         //implement
-        
-        ArrayList<FileEntityDescription> toreturn=new ArrayList<>();
+
+        ArrayList<FileEntityDescription> toreturn = new ArrayList<>();
         ResultSet r = filesTable.selectByOwner(username);
         while (r.next()) {
             Date d = r.getTimestamp("time");
-            toreturn.add(new FileEntityDescription(r.getString("name"),r.getInt("size"),
-                    r.getString("owner"),r.getBoolean("privacy"),
-                    r.getBoolean("permission"),d));
+            toreturn.add(new FileEntityDescription(r.getString("name"), r.getInt("size"),
+                    r.getString("owner"), r.getBoolean("privacy"),
+                    r.getBoolean("permission"), d));
         }
         return toreturn;
     }
 
     public void deleteFile(String filename) throws SQLException {
-        
+
         //implement
         filesTable.deleteFile(filename);
     }
 
-  
-
-    public String loadCompleteFile(String filename) throws SQLException {
+    public FileEntity loadCompleteFile(String filename) throws SQLException, IOException {
         //implement
         ResultSet r = filesTable.selectByName(filename);
         if (r.next()) {
-            return r.getString("path");
-            /*return new FileEntity(new FileEntityDescription(r.getString("name"),r.getInt("size"),
-                    r.getString("owner"),r.getBoolean("privacy"),
-                    r.getBoolean("permission"),d),r.getString("path"));*/
+            String path = r.getString("path");
+            String name = r.getString("name");
+            Boolean privacy = r.getBoolean("privacy");
+            Boolean permission = r.getBoolean("permission");
+            Integer size = r.getInt("size");
+            String owner = r.getString("owner");
+            Date d = r.getTimestamp("time");
+
+            FileEntityDescription fd = new FileEntityDescription(name, size, owner, privacy, permission, d);
+            File f = new File(path);
+            Path p = Paths.get(f.getAbsolutePath());
+
+            byte[] data = java.nio.file.Files.readAllBytes(p);
+            return new FileEntity(fd, data);
+
         }
-        return null;
-            
+        else {
+            throw new IOException("file not found in db");
+        }
+
     }
 
     public String getFileLocation(String file) throws SQLException {

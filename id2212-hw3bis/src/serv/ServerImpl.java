@@ -154,8 +154,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
             }
         }
-
-        return db.loadCompleteFile(filename);
+        try {
+            return db.loadCompleteFile(filename);
+        } catch (SQLException | IOException ex) {
+            throw new RemoteException(ex.getMessage());
+        }
 
     }
 
