@@ -44,16 +44,19 @@ public class Register {
             //dropTable();
             System.out.println("table exist...");
         }
+        else {
+            statement.executeUpdate(
+                "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
+                + "passwd VARCHAR(255) NOT NULL, state VARCHAR(255), "
+                + "upload INTEGER, download INTEGER)");
+        }
         createRegister();
         System.out.println();
         System.out.println("table created...");
     }
     
     public void createRegister() throws SQLException {
-        statement.executeUpdate(
-                "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
-                + "passwd VARCHAR(255) NOT NULL, state VARCHAR(255), "
-                + "upload INTEGER, download INTEGER)");
+        
         insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,passwd,state,upload,download) VALUES (?, ?, ?, ?, ?)");
         update=conn.prepareStatement("UPDATE "+DB_NAME+" SET state=? WHERE name=? AND passwd=?");
         updateUpload=conn.prepareStatement("UPDATE "+DB_NAME+" SET upload=? WHERE name=?");

@@ -48,17 +48,20 @@ public class Files {
             //dropTable();
             System.out.println("table already exist...");
         }
+        else {
+            statement.executeUpdate(
+                "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
+                + "size int, owner VARCHAR(255) NOT NULL, privacy BOOLEAN NOT NULL, "
+                + "permission BOOLEAN NOT NULL, path VARCHAR(225), "
+                + "time TIMESTAMP)");
+        }
         createFiles();
         System.out.println();
         System.out.println("table created...");
     }
     
     public void createFiles() throws SQLException {
-        statement.executeUpdate(
-                "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
-                + "size int, owner VARCHAR(255) NOT NULL, privacy BOOLEAN NOT NULL, "
-                + "permission BOOLEAN NOT NULL, path VARCHAR(225), "
-                + "time TIMESTAMP)");
+        
         insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,size,owner,privacy,permission, path, time)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?)");
         updateSize=conn.prepareStatement("UPDATE "+DB_NAME+" SET size=? WHERE name=?");
