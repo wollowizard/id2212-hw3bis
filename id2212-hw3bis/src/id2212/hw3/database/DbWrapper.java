@@ -100,7 +100,7 @@ public class DbWrapper {
         regTable.deleteRegister(user.name);
     }
 
-    public ArrayList<FileEntityDescription> loadFiles(String filter) throws SQLException {
+    public ArrayList<FileEntityDescription> loadFiles(String filter, String owner) throws SQLException {
         //implement
         //Note that if a file is marked as private, it can be listed only for its owner
 
@@ -108,7 +108,8 @@ public class DbWrapper {
         ArrayList<FileEntityDescription> toreturn = new ArrayList<>();
         ResultSet r = filesTable.selectAll();
         while (r.next()) {
-            if (r.getBoolean("privacy") && !r.getString("owner").equals(filter)) {
+            if (!filter.isEmpty() && !r.getString("name").contains(filter)) continue;
+            if (r.getBoolean("privacy") && !r.getString("owner").equals(owner)) {
                 continue;
             }
             Date d = r.getTimestamp("time");
@@ -140,6 +141,21 @@ public class DbWrapper {
 
         //implement
         filesTable.deleteFile(filename);
+    }
+    
+    
+    public void uploadUploadCounter(String name) throws SQLException {
+        ResultSet r =  regTable.selectRegister(name);
+        if (r.next()) {
+            regTable.updateNumUploads(name, r.getInt("upload")+1);
+        }
+    }
+    
+    public void uploadDownloadCounter(String name) throws SQLException {
+        ResultSet r =  regTable.selectRegister(name);
+        if (r.next()) {
+            regTable.updateNumDownloads(name, r.getInt("download")+1);
+        }
     }
 
     public FileEntity loadCompleteFile(String filename) throws SQLException, IOException {

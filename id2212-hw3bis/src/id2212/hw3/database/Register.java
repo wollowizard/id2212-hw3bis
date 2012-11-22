@@ -29,6 +29,8 @@ public class Register {
     public static final String CONNECTED = "connected";
     
     public static final String DISCONNECTED = "disconnected";
+    private PreparedStatement updateUpload;
+    private PreparedStatement updateDownload;
     
     
     public Register(Connection c, Statement s) {
@@ -39,7 +41,9 @@ public class Register {
     public void createTable() throws SQLException {
         ResultSet result = conn.getMetaData().getTables(null, null, DB_NAME, null);
         if (result.next()) {
-            dropTable();
+            //dropTable();
+            System.out.println("table exist...");
+            return;
         }
         createRegister();
         System.out.println();
@@ -49,9 +53,12 @@ public class Register {
     public void createRegister() throws SQLException {
         statement.executeUpdate(
                 "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
-                + "passwd VARCHAR(255) NOT NULL, state VARCHAR(255))");
-        insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,passwd,state) VALUES (?, ?, ?)");
+                + "passwd VARCHAR(255) NOT NULL, state VARCHAR(255), "
+                + "upload INTEGER, download INTEGER)");
+        insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,passwd,state,upload,download) VALUES (?, ?, ?, ?, ?)");
         update=conn.prepareStatement("UPDATE "+DB_NAME+" SET state=? WHERE name=? AND passwd=?");
+        updateUpload=conn.prepareStatement("UPDATE "+DB_NAME+" SET upload=? WHERE name=?");
+        updateDownload=conn.prepareStatement("UPDATE "+DB_NAME+" SET download=? WHERE name=?");
         select=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE name=?");
         selectConected = conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE state=?");
         delete=conn.prepareStatement("DELETE FROM "+DB_NAME+" WHERE name=?");
@@ -61,6 +68,8 @@ public class Register {
         insert.setString(1, name);
         insert.setString(2, passwd);
         insert.setString(3, state);
+        insert.setInt(4, 0);
+        insert.setInt(5, 0);
         
         int noOfAffectedRows = insert.executeUpdate();
         System.out.println();
@@ -71,6 +80,26 @@ public class Register {
         update.setString(1, state);
         update.setString(2, name);
         update.setString(3, passwd);
+        
+        int noAffectedRows = update.executeUpdate();
+        if (noAffectedRows==0) throw new SQLException("USER NOT FOUND");
+        System.out.println();
+        System.out.println("Register update, changes made = " + noAffectedRows + " row(s).");
+    }
+    
+    public void updateNumUploads(String name, Integer n) throws SQLException {
+        updateUpload.setInt(1, n);
+        update.setString(2, name);
+        
+        int noAffectedRows = update.executeUpdate();
+        if (noAffectedRows==0) throw new SQLException("USER NOT FOUND");
+        System.out.println();
+        System.out.println("Register update, changes made = " + noAffectedRows + " row(s).");
+    }
+    
+    public void updateNumDownloads(String name, Integer n) throws SQLException {
+        updateUpload.setInt(1, n);
+        update.setString(2, name);
         
         int noAffectedRows = update.executeUpdate();
         if (noAffectedRows==0) throw new SQLException("USER NOT FOUND");
