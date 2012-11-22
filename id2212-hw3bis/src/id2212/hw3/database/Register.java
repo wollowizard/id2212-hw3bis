@@ -43,7 +43,6 @@ public class Register {
         if (result.next()) {
             //dropTable();
             System.out.println("table exist...");
-            return;
         }
         createRegister();
         System.out.println();

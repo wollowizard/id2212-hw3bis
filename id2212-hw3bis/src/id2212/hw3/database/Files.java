@@ -47,7 +47,6 @@ public class Files {
         if (result.next()) {
             //dropTable();
             System.out.println("table already exist...");
-            return;
         }
         createFiles();
         System.out.println();
