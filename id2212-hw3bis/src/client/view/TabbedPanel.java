@@ -48,7 +48,7 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
         initComponents();
         client = c;
         client.addObserver(this);
-        this.parent=parent;
+        this.parent = parent;
 
         welcomeLabel.setText("Welcome " + client.clientName);
 
@@ -375,15 +375,17 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
     }
 
     private void updateAllFiles() {
-        System.out.println("Updating all files");
+        System.out.println("Updating all files, new list:");
+
+        DefaultTableModel model = (DefaultTableModel) allFilesTable.getModel();
+        while (model.getRowCount() > 0) {
+            model.removeRow(0);
+        }
+
         for (FileEntityDescription fe : client.allfiles) {
             System.out.println(fe.name);
-            DefaultTableModel model = (DefaultTableModel) allFilesTable.getModel();
-            while (model.getRowCount() > 0) {
-                model.removeRow(0);
-            }
-            model.addRow(new Object[]{fe.name, fe.ownerName, fe.writepermission, fe.privateFile, fe.size.toString()});
 
+            model.addRow(new Object[]{fe.name, fe.ownerName, fe.writepermission, fe.privateFile, fe.size.toString()});
         }
     }
 
@@ -461,10 +463,10 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
             client.servObj.logout(new User(client.clientName, client.clientPasswd));
         } catch (RemoteException ex) {
             Logger.getLogger(TabbedPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             new SignFrame(client).setVisible(true);
             parent.dispose();
-            
+
         }
 
     }//GEN-LAST:event_logoutButtonActionPerformed
@@ -501,6 +503,7 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
     public void search() {
         try {
             client.allfiles = client.servObj.loadFiles(filterTextField.getText());
+
             updateAllFiles();
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
