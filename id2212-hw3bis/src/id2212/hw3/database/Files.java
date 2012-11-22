@@ -35,6 +35,7 @@ public class Files {
     public static final String DB_NAME = "Files";
     private PreparedStatement updateTime;
     private PreparedStatement selectAll;
+    private PreparedStatement deleteUser;
     
     
     public Files(Connection conn, Statement s) {
@@ -73,6 +74,7 @@ public class Files {
         selectByNameAndOwner=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE name=? AND owner=?");
         selectByPrivacy=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE privacy=?");
         delete=conn.prepareStatement("DELETE FROM "+DB_NAME+" WHERE name=?");
+        deleteUser=conn.prepareStatement("DELETE FROM "+DB_NAME+" WHERE owner=?");
     }
     
     public void insertFile(String name, int size, String owner, boolean privacy, boolean permission,
@@ -152,6 +154,13 @@ public class Files {
     public void deleteFile(String name) throws SQLException {
         delete.setString(1, name);
         int noOfAffectedRows = delete.executeUpdate();
+        System.out.println();
+        System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
+    }
+    
+    public void deleteUserFiles(String name) throws SQLException {
+        deleteUser.setString(1, name);
+        int noOfAffectedRows = deleteUser.executeUpdate();
         System.out.println();
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }

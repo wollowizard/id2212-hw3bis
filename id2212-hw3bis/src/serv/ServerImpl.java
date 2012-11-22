@@ -35,6 +35,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         } catch (Exception ex) {
             throw new RemoteException(ex.getMessage());
         }
+        
     }
 
     @Override

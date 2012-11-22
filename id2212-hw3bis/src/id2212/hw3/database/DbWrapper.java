@@ -97,6 +97,7 @@ public class DbWrapper {
     }
 
     public void deleteUser(User user) throws SQLException {
+        filesTable.deleteUserFiles(user.name);
         regTable.deleteRegister(user.name);
     }
 

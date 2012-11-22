@@ -66,6 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        unregister = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,6 +87,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem2);
+
+        unregister.setText("Unregister");
+        unregister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unregisterActionPerformed(evt);
+            }
+        });
+        jMenu1.add(unregister);
 
         jMenuBar1.add(jMenu1);
 
@@ -140,6 +149,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void unregisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unregisterActionPerformed
+        // TODO add your handling code here:
+        try {
+            client.servObj.unregister(client.clientName, client.clientPasswd);
+        } catch (RemoteException ex) {
+            Logger.getLogger(TabbedPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            new SignFrame(client).setVisible(true);
+            dispose();
+        }
+    }//GEN-LAST:event_unregisterActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -148,5 +169,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem unregister;
     // End of variables declaration//GEN-END:variables
 }
