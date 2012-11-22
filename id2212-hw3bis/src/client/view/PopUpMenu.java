@@ -50,6 +50,7 @@ class PopUpMenu extends JPopupMenu {
                 try {
                     FileEntity completeFile = client.servObj.getCompleteFile(client.clientName, filename);
                     client.storeFileOnDisk(completeFile);
+                    parentPanel.updateStatistics();
 
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(downloadItem, ex.getMessage());
@@ -67,6 +68,7 @@ class PopUpMenu extends JPopupMenu {
                     if (fromtable.equals(FROMYOURFILES)) {
                         client.yourfiles = client.servObj.loadAllFilesof(client.clientName);
                         client.notifyAll(EventEnum.YOURFILE);
+                        parentPanel.updateStatistics();
                     } else {
                         parentPanel.search();
                     }
@@ -99,6 +101,7 @@ class PopUpMenu extends JPopupMenu {
                         try {
                             byte[] data = Files.readAllBytes(path);
                             client.servObj.updateFile(client.clientName,file, data);
+                            parentPanel.updateStatistics();
 
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(parentPanel, ex.getMessage());

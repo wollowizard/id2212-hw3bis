@@ -157,6 +157,7 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
         allFilesTable = new javax.swing.JTable();
         welcomeLabel = new javax.swing.JLabel();
         logoutButton = new javax.swing.JButton();
+        StatisticLabel = new javax.swing.JLabel();
 
         uploadFile.setText("Choose");
         uploadFile.addActionListener(new java.awt.event.ActionListener() {
@@ -336,24 +337,28 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
             }
         });
 
+        StatisticLabel.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane1)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(29, 29, 29)
                 .addComponent(logoutButton)
-                .addGap(75, 75, 75))
+                .addGap(88, 88, 88)
+                .addComponent(StatisticLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(welcomeLabel)
-                    .addComponent(logoutButton))
+                    .addComponent(logoutButton)
+                    .addComponent(StatisticLabel))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -471,6 +476,7 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
             client.validateFileToUpload();
 
             client.servObj.uploadFile(file);
+            updateStatistics();
 
 
         } catch (Exception ex) {
@@ -498,6 +504,7 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
     }//GEN-LAST:event_logoutButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton SearchButton;
+    private javax.swing.JLabel StatisticLabel;
     private javax.swing.JTable allFilesTable;
     private javax.swing.JLabel fileNameLabel;
     private javax.swing.JTextField filterTextField;
@@ -544,5 +551,14 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
         int exp = (int) (Math.log(bytes) / Math.log(unit));
         String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+    }
+    
+    public void updateStatistics(){
+        try {
+            String stat=client.servObj.getStatistics(client.clientName);
+            this.StatisticLabel.setText(stat);
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(parent, ex.getMessage());
+        }
     }
 }
