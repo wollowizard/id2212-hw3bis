@@ -278,4 +278,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         return completePath;
 
     }
+
+    @Override
+    public String getStatistics(String clientname) throws RemoteException {
+        return DbWrapper.getInstance().getStatistics(clientname);
+        
+    }
 }

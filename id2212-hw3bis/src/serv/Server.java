@@ -27,4 +27,7 @@ public interface Server extends Remote {
     public void updateFile(String clientname, String file, byte[] data)throws RemoteException;
 
     public void logout(User u)throws RemoteException;
+    
+    public String getStatistics(String clientname)throws RemoteException;
+    
 }
