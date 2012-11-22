@@ -169,7 +169,9 @@ public class DbWrapper {
     public String getFileLocation(String file) throws SQLException {
         //implement
         ResultSet r = filesTable.selectByName(file);
-        return r.getString("path");
+        if (r.next())
+            return r.getString("path");
+        return null;
     }
 
     public void editFileLastModified(String file) throws SQLException {
