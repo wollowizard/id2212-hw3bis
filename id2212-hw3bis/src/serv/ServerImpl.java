@@ -281,7 +281,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     @Override
     public String getStatistics(String clientname) throws RemoteException {
-        return DbWrapper.getInstance().getStatistics(clientname);
+        try {
+            return DbWrapper.getInstance().getStatistics(clientname);
+        } catch (SQLException ex) {
+            throw new RemoteException(ex.getMessage());
+        }
         
     }
 }
