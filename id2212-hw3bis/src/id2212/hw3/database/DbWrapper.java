@@ -157,6 +157,14 @@ public class DbWrapper {
             regTable.updateNumDownloads(name, r.getInt("download")+1);
         }
     }
+    
+    public String getStatistics(String name) throws SQLException {
+        ResultSet r =  regTable.selectRegister(name);
+        if (r.next()) {
+            return "Uploads: "+r.getInt("upload")+" | Downloads: "+r.getInt("download");
+        }
+        return null;
+    }
 
     public FileEntity loadCompleteFile(String filename) throws SQLException, IOException {
         //implement
