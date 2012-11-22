@@ -45,7 +45,9 @@ public class Files {
      public void createTable() throws SQLException {
         ResultSet result = conn.getMetaData().getTables(null, null, DB_NAME, null);
         if (result.next()) {
-            dropTable();
+            //dropTable();
+            System.out.println("table already exist...");
+            return;
         }
         createFiles();
         System.out.println();

@@ -140,6 +140,21 @@ public class DbWrapper {
         //implement
         filesTable.deleteFile(filename);
     }
+    
+    
+    public void uploadUploadCounter(String name) throws SQLException {
+        ResultSet r =  regTable.selectRegister(name);
+        if (r.next()) {
+            regTable.updateNumUploads(name, r.getInt("upload")+1);
+        }
+    }
+    
+    public void uploadDownloadCounter(String name) throws SQLException {
+        ResultSet r =  regTable.selectRegister(name);
+        if (r.next()) {
+            regTable.updateNumDownloads(name, r.getInt("download")+1);
+        }
+    }
 
     public FileEntity loadCompleteFile(String filename) throws SQLException, IOException {
         //implement
