@@ -137,8 +137,10 @@ public class DbWrapper {
         return r.getString("path");
     }
 
-    public void editFileLastModified(String file, Date date) {
+    public void editFileLastModified(String file) throws SQLException {
         //implement
+        Date d = new Date();
+        filesTable.updateDate(file, String.valueOf(d.getTime()));
     }
 
     public void editFileSize(String file, int length) throws SQLException {

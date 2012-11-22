@@ -93,6 +93,16 @@ public class Files {
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
     
+    public void updateDate(String name, String date) throws SQLException {
+        updateTime.setString(1, date);
+        updateTime.setString(2, name);
+        
+        int noOfAffectedRows = updateTime.executeUpdate();
+        if (noOfAffectedRows==0) throw new SQLException("FILE NOT FOUND");
+        System.out.println();
+        System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
+    }
+    
     public void updatePrivacy(String name, boolean p) throws SQLException {
         updatePrivacy.setBoolean(1, p);
         updatePrivacy.setString(2, name);

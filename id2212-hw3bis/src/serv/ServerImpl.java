@@ -116,7 +116,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 throw new RemoteException("You are not allowed to delete this file, since it is public but you don't have write permission on it");
             }
         }
-        DbWrapper.getInstance().deleteFile(filename);
+        try {
+            DbWrapper.getInstance().deleteFile(filename);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -166,7 +170,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
                 }
             }
 
-            db.editFileLastModified(file, new Date());
+            db.editFileLastModified(file);
             db.editFileSize(file, data.length);
 
             String path = db.getFileLocation(file);
