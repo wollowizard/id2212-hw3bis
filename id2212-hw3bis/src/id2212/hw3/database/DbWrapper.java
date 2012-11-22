@@ -139,9 +139,17 @@ public class DbWrapper {
 
   
 
-    public FileEntity loadCompleteFile(String filename) {
+    public String loadCompleteFile(String filename) throws SQLException {
         //implement
-        return new FileEntity(new FileEntityDescription(filename, Integer.SIZE, filename, true, true, new Date()), null);
+        ResultSet r = filesTable.selectByName(filename);
+        if (r.next()) {
+            return r.getString("path");
+            /*return new FileEntity(new FileEntityDescription(r.getString("name"),r.getInt("size"),
+                    r.getString("owner"),r.getBoolean("privacy"),
+                    r.getBoolean("permission"),d),r.getString("path"));*/
+        }
+        return null;
+            
     }
 
     public String getFileLocation(String file) throws SQLException {

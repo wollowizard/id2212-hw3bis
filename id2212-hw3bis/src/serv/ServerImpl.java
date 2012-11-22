@@ -73,9 +73,12 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public ArrayList<FileEntityDescription> loadAllFilesof(String username) throws RemoteException {
 
 
-        ArrayList<FileEntityDescription> toreturn = DbWrapper.getInstance().loadAllFilesof(username);
-
-
+        ArrayList<FileEntityDescription> toreturn;
+        try {
+            toreturn = DbWrapper.getInstance().loadAllFilesof(username);
+        } catch (SQLException ex) {
+            throw new RemoteException(ex.getMessage());
+        }
         return toreturn;
 
     }
@@ -84,7 +87,12 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     public ArrayList<FileEntityDescription> loadFiles(String filter) throws RemoteException {
 
 
-        ArrayList<FileEntityDescription> toreturn = DbWrapper.getInstance().loadFiles(filter);
+        ArrayList<FileEntityDescription> toreturn;
+        try {
+            toreturn = DbWrapper.getInstance().loadFiles(filter);
+        } catch (SQLException ex) {
+            throw new RemoteException(ex.getMessage());
+        }
 
         return toreturn;
     }
