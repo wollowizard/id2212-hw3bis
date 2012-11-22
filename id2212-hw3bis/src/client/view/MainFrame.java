@@ -5,7 +5,19 @@
 package client.view;
 
 import client.ClientImpl;
+import entity.User;
+import java.awt.BorderLayout;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
@@ -26,10 +38,17 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame(ClientImpl c) {
         initComponents();
         TabbedPanel tab = new TabbedPanel(c, this);
-        
-        
-        this.setContentPane(tab);
+        setLayout(new BorderLayout());
+        //add(tab, BorderLayout.CENTER);
 
+
+
+
+
+        this.setContentPane(tab);
+        pack();
+
+        this.setResizable(false);
         this.validate();
         client = c;
     }
@@ -43,7 +62,34 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jMenu1.setText("File");
+
+        jMenuItem1.setText("Logout");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Choose download folder");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -53,14 +99,54 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 322, Short.MAX_VALUE)
+            .addGap(0, 301, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+
+
+        try {
+            // TODO add your handling code here:
+
+            client.servObj.logout(new User(client.clientName, client.clientPasswd));
+        } catch (RemoteException ex) {
+            Logger.getLogger(TabbedPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            new SignFrame(client).setVisible(true);
+            dispose();
+
+        }
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+
+        final JFileChooser fc = new JFileChooser();
+
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+
+            client.downloadFolder = file.getAbsolutePath();
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid Folder");
+
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     // End of variables declaration//GEN-END:variables
 }

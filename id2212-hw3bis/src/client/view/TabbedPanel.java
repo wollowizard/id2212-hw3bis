@@ -156,7 +156,6 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
         jScrollPane2 = new javax.swing.JScrollPane();
         allFilesTable = new javax.swing.JTable();
         welcomeLabel = new javax.swing.JLabel();
-        logoutButton = new javax.swing.JButton();
         StatisticLabel = new javax.swing.JLabel();
 
         uploadFile.setText("Choose");
@@ -330,13 +329,6 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
 
         welcomeLabel.setText("Welcome ");
 
-        logoutButton.setText("Logout");
-        logoutButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logoutButtonActionPerformed(evt);
-            }
-        });
-
         StatisticLabel.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -346,9 +338,7 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
             .addComponent(jTabbedPane1)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(logoutButton)
-                .addGap(88, 88, 88)
+                .addGap(182, 182, 182)
                 .addComponent(StatisticLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -357,7 +347,6 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(welcomeLabel)
-                    .addComponent(logoutButton)
                     .addComponent(StatisticLabel))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -487,21 +476,6 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-
-        try {
-            // TODO add your handling code here:
-
-            client.servObj.logout(new User(client.clientName, client.clientPasswd));
-        } catch (RemoteException ex) {
-            Logger.getLogger(TabbedPanel.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            new SignFrame(client).setVisible(true);
-            parent.dispose();
-
-        }
-
-    }//GEN-LAST:event_logoutButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton SearchButton;
     private javax.swing.JLabel StatisticLabel;
@@ -520,7 +494,6 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JButton logoutButton;
     private javax.swing.JComboBox permissionComboBox;
     private javax.swing.JComboBox privacyComboBox;
     private javax.swing.JButton uploadFile;

@@ -34,6 +34,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     public FileEntity currentFileToUpload = new FileEntity(new FileEntityDescription("", 0, "", true, true,new Date()), null);
     
     public ArrayList<MyObserver> observers = new ArrayList<>();
+    public String downloadFolder=".";
 
     public ClientImpl(String sname) throws RemoteException {
         this.servName = sname;
@@ -66,7 +67,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     public void storeFileOnDisk(FileEntity completeFile) throws IOException {
-        File file = new File(completeFile.getDescription().name);
+        String separator = System.getProperty("file.separator");
+        String CompleteFilePath=this.downloadFolder;
+        if(!downloadFolder.endsWith(separator)){
+            CompleteFilePath+=separator;
+        }
+        CompleteFilePath+=completeFile.getDescription().name;
+        
+        File file = new File(CompleteFilePath);
 
         boolean created = file.createNewFile();
         if (!created) {
