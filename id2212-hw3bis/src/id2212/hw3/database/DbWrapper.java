@@ -80,8 +80,9 @@ public class DbWrapper {
         FileEntityDescription f = fe.getDescription();
         f.lastModified=new Date();
         
-        
-        filesTable.insertFile(f.name, f.size, f.ownerName, f.privateFile, f.writepermission);
+        Date d = new Date();
+        filesTable.insertFile(f.name, f.size, f.ownerName, f.privateFile, 
+                f.writepermission, "", String.valueOf(d.getTime())); //insert path of file
     }
 
     public FileEntityDescription loadFileEntity(String name) throws SQLException {
@@ -117,10 +118,10 @@ public class DbWrapper {
         return toreturn;
     }
 
-    public void deleteFile(String filename) {
+    public void deleteFile(String filename) throws SQLException {
         
         //implement
-        
+        filesTable.deleteFile(filename);
     }
 
   
@@ -130,17 +131,18 @@ public class DbWrapper {
         return new FileEntity(new FileEntityDescription(filename, Integer.SIZE, filename, true, true, new Date()), null);
     }
 
-    public String getFileLocation(String file) {
+    public String getFileLocation(String file) throws SQLException {
         //implement
-        
-        return "";
+        ResultSet r = filesTable.selectByName(file);
+        return r.getString("path");
     }
 
     public void editFileLastModified(String file, Date date) {
         //implement
     }
 
-    public void editFileSize(String file, int length) {
+    public void editFileSize(String file, int length) throws SQLException {
         //implement
+        filesTable.updateSize(file, length);
     }
 }

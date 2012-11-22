@@ -31,6 +31,7 @@ public class Files {
     private PreparedStatement selectByNameAndOwner;
     
     public static final String DB_NAME = "Files";
+    private PreparedStatement updateTime;
     
     
     public Files(Connection conn, Statement s) {
@@ -51,12 +52,15 @@ public class Files {
     public void createFiles() throws SQLException {
         statement.executeUpdate(
                 "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
-                + "size int, owner VARCHAR(255) NOT NULL, privacy BOOLEAN NOT NULL, permission BOOLEAN NOT NULL)");
-        insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,size,owner,privacy,permission)"
-                + " VALUES (?, ?, ?, ?, ?)");
-        updateSize=conn.prepareStatement("UPDATE "+DB_NAME+" SET size=? AND time=DEFAULT WHERE name=?");
-        updatePrivacy=conn.prepareStatement("UPDATE "+DB_NAME+" SET privacy=? AND time=DEFAULT WHERE name=?");
-        updatePermission=conn.prepareStatement("UPDATE "+DB_NAME+" SET permission=? AND time=DEFAULT WHERE name=?");
+                + "size int, owner VARCHAR(255) NOT NULL, privacy BOOLEAN NOT NULL, "
+                + "permission BOOLEAN NOT NULL, path VARCHAR(225), "
+                + "modify VARCHAR(255))");
+        insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,size,owner,privacy,permission, path, modify)"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?)");
+        updateSize=conn.prepareStatement("UPDATE "+DB_NAME+" SET size=? WHERE name=?");
+        updatePrivacy=conn.prepareStatement("UPDATE "+DB_NAME+" SET privacy=? WHERE name=?");
+        updatePermission=conn.prepareStatement("UPDATE "+DB_NAME+" SET permission=? WHERE name=?");
+        updateTime=conn.prepareStatement("UPDATE "+DB_NAME+" SET modify=? WHERE name=?");
         selectByName=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE name=?");
         selectByOwner=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE owner=?");
         selectByNameAndOwner=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE name=? AND owner=?");
@@ -64,12 +68,15 @@ public class Files {
         delete=conn.prepareStatement("DELETE FROM "+DB_NAME+" WHERE name=?");
     }
     
-    public void insertFile(String name, int size, String owner, boolean privacy, boolean permission) throws SQLException {
+    public void insertFile(String name, int size, String owner, boolean privacy, boolean permission,
+            String path, String date) throws SQLException {
         insert.setString(1, name);
         insert.setInt(2, size);
         insert.setString(3, owner);
         insert.setBoolean(4,privacy);
         insert.setBoolean(5,permission);
+        insert.setString(6, path);
+        insert.setString(7, date);
         
         int noOfAffectedRows = insert.executeUpdate();
         System.out.println();
