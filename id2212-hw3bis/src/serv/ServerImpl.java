@@ -125,7 +125,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             }
         }
         try {
-            DbWrapper.getInstance().deleteFile(filename);
+            String abspath = fd.DbWrapper.getInstance().deleteFile(filename);
+
         } catch (SQLException ex) {
             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -238,5 +239,26 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         } catch (SQLException ex) {
             throw new RemoteException(ex.getMessage());
         }
+    }
+
+    public String getPathOfFileGivenName(String filename) throws IOException {
+
+
+        String separator = System.getProperty("file.separator");
+
+        String completePath = new java.io.File(".").getCanonicalPath();
+        if (!completePath.endsWith(separator)) {
+            completePath += separator;
+        }
+        completePath += this.FOLDERNAME;
+
+
+        //creare file path
+        if (!completePath.endsWith(separator)) {
+            completePath += separator;
+        }
+        completePath += filename
+        return completePath;
+
     }
 }
