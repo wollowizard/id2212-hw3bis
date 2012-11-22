@@ -122,7 +122,7 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
             }
         });
 
-
+        updateStatistics();
 
     }
 
@@ -552,10 +552,10 @@ public class TabbedPanel extends javax.swing.JPanel implements MyObserver {
         String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
-    
-    public void updateStatistics(){
+
+    public void updateStatistics() {
         try {
-            String stat=client.servObj.getStatistics(client.clientName);
+            String stat = client.servObj.getStatistics(client.clientName);
             this.StatisticLabel.setText(stat);
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(parent, ex.getMessage());
