@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  *
@@ -32,6 +34,7 @@ public class Files {
     
     public static final String DB_NAME = "Files";
     private PreparedStatement updateTime;
+    private PreparedStatement selectAll;
     
     
     public Files(Connection conn, Statement s) {
@@ -54,13 +57,13 @@ public class Files {
                 "CREATE TABLE "+DB_NAME+" (name VARCHAR(255) NOT NULL PRIMARY KEY, "
                 + "size int, owner VARCHAR(255) NOT NULL, privacy BOOLEAN NOT NULL, "
                 + "permission BOOLEAN NOT NULL, path VARCHAR(225), "
-                + "modify VARCHAR(255))");
+                + "time TIMESTAMP)");
         insert=conn.prepareStatement("INSERT INTO "+DB_NAME+" (name,size,owner,privacy,permission, path, modify)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?)");
         updateSize=conn.prepareStatement("UPDATE "+DB_NAME+" SET size=? WHERE name=?");
         updatePrivacy=conn.prepareStatement("UPDATE "+DB_NAME+" SET privacy=? WHERE name=?");
         updatePermission=conn.prepareStatement("UPDATE "+DB_NAME+" SET permission=? WHERE name=?");
-        updateTime=conn.prepareStatement("UPDATE "+DB_NAME+" SET modify=? WHERE name=?");
+        updateTime=conn.prepareStatement("UPDATE "+DB_NAME+" SET time=? WHERE name=?");
         selectByName=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE name=?");
         selectByOwner=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE owner=?");
         selectByNameAndOwner=conn.prepareStatement("SELECT * FROM "+DB_NAME+" WHERE name=? AND owner=?");
@@ -69,15 +72,16 @@ public class Files {
     }
     
     public void insertFile(String name, int size, String owner, boolean privacy, boolean permission,
-            String path, String date) throws SQLException {
+            String path) throws SQLException {
+        Date d = new Date();
+        Timestamp date = new Timestamp(d.getTime());
         insert.setString(1, name);
         insert.setInt(2, size);
         insert.setString(3, owner);
         insert.setBoolean(4,privacy);
         insert.setBoolean(5,permission);
         insert.setString(6, path);
-        insert.setString(7, date);
-        
+        insert.setTimestamp(7, date);
         int noOfAffectedRows = insert.executeUpdate();
         System.out.println();
         System.out.println("Register inserted, changes made = " + noOfAffectedRows + " row(s).");

@@ -79,10 +79,8 @@ public class DbWrapper {
         
         FileEntityDescription f = fe.getDescription();
         f.lastModified=new Date();
-        
-        Date d = new Date();
         filesTable.insertFile(f.name, f.size, f.ownerName, f.privateFile, 
-                f.writepermission, "", String.valueOf(d.getTime())); //insert path of file
+                f.writepermission, ""); //insert path of file
     }
 
     public FileEntityDescription loadFileEntity(String name) throws SQLException {
@@ -90,7 +88,8 @@ public class DbWrapper {
         //else return a FileEntity with fields set
         ResultSet r = filesTable.selectByName(name);
         if (r.next()) {
-            return new FileEntityDescription(r.getString("name"), r.getInt("size"), r.getString("owner"), r.getBoolean("privacy"), r.getBoolean("permission"),r.getDate("date"));
+            Date d = r.getTimestamp("time");
+            return new FileEntityDescription(r.getString("name"), r.getInt("size"), r.getString("owner"), r.getBoolean("privacy"), r.getBoolean("permission"),d);
         }
         return null;
     }
@@ -99,22 +98,36 @@ public class DbWrapper {
         regTable.deleteRegister(user.name);
     }
 
-    public ArrayList<FileEntityDescription> loadFiles(String filter) {
+    public ArrayList<FileEntityDescription> loadFiles(String filter) throws SQLException {
         //implement
         //Note that if a file is marked as private, it can be listed only for its owner
         
         
         ArrayList<FileEntityDescription> toreturn=new ArrayList<>();
-        toreturn.add(new FileEntityDescription("Acquisti.filename", 123, "user", true, true, new Date()));
+        ResultSet r = filesTable.selectAll();
+        while (r.next()) {
+            if (r.getBoolean("privacy") && !r.getString("owner").equals(filter))
+                continue;
+            Date d = r.getTimestamp("time");
+            toreturn.add(new FileEntityDescription(r.getString("name"),r.getInt("size"),
+                    r.getString("owner"),r.getBoolean("privacy"),
+                    r.getBoolean("permission"),d));
+        }
         return toreturn;
     }
 
-    public ArrayList<FileEntityDescription> loadAllFilesof(String username) {
+    public ArrayList<FileEntityDescription> loadAllFilesof(String username) throws SQLException {
         
         //implement
         
         ArrayList<FileEntityDescription> toreturn=new ArrayList<>();
-        toreturn.add(new FileEntityDescription("Acquisti.filename", 123, "user", false, true, new Date()));
+        ResultSet r = filesTable.selectByOwner(username);
+        while (r.next()) {
+            Date d = r.getTimestamp("time");
+            toreturn.add(new FileEntityDescription(r.getString("name"),r.getInt("size"),
+                    r.getString("owner"),r.getBoolean("privacy"),
+                    r.getBoolean("permission"),d));
+        }
         return toreturn;
     }
 
