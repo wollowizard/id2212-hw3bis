@@ -174,8 +174,7 @@ public class DbWrapper {
 
     public void editFileLastModified(String file) throws SQLException {
         //implement
-        Date d = new Date();
-        filesTable.updateDate(file, String.valueOf(d.getTime()));
+        filesTable.updateDate(file);
     }
 
     public void editFileSize(String file, int length) throws SQLException {

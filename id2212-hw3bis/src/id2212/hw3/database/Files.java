@@ -97,8 +97,10 @@ public class Files {
         System.out.println("Register update, changes made = " + noOfAffectedRows + " row(s).");
     }
     
-    public void updateDate(String name, String date) throws SQLException {
-        updateTime.setString(1, date);
+    public void updateDate(String name) throws SQLException {
+        Date d = new Date();
+        Timestamp date = new Timestamp(d.getTime());
+        updateTime.setTimestamp(1, date);
         updateTime.setString(2, name);
         
         int noOfAffectedRows = updateTime.executeUpdate();
